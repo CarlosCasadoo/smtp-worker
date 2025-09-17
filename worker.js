@@ -18,7 +18,7 @@ export default {
                 return new Response("No se encontró el template", { status: 500 });
             }
 
-            if (!email || !mensaje) {
+            if (!email || !nombre) {
                 return new Response("Faltan campos obligatorios", { status: 400 });
             }
 
