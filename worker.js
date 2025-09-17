@@ -25,7 +25,9 @@ export default {
             const url = env.SMTP2GO_URL;
 
             // ENVIAR AL CLIENTE
-            const clientTemplateText = await clientTemplate.text();
+            const clientTemplateBuffer = await clientTemplate.arrayBuffer();
+            const clientTemplateText = new TextDecoder("utf-8").decode(clientTemplateBuffer);
+
             await fetch(url, {
                 method: "POST",
                 headers: {
@@ -41,7 +43,9 @@ export default {
             });
 
             // ENVIAR AL ADMIN
-            const adminTemplateText = await adminTemplate.text();
+            const adminTemplateBuffer = await adminTemplate.arrayBuffer();
+            const adminTemplateText = new TextDecoder("utf-8").decode(adminTemplateBuffer);
+
             const htmlAdmin = adminTemplateText
                 .replace("{{nombre}}", nombre)
                 .replace("{{email}}", email)
