@@ -5,3 +5,8 @@ compatibility_date = "2025-09-17"
 [[r2_buckets]]
 binding = "EMAIL_TEMPLATE_BUCKET"
 bucket_name = "templates"
+
+[vars]
+SMTP2GO_URL = "https://api.smtp2go.com/v3/email/send"
+FROM_EMAIL = "no-reply@carpinteriaeltriangulo.com"
+ADMIN_EMAIL = "trexrpgcount@gmail.com"
