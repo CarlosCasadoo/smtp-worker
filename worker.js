@@ -1,5 +1,17 @@
 export default {
     async fetch(request, env, ctx) {
+
+        if (request.method === "OPTIONS") {
+            return new Response(null, {
+                status: 204,
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "POST, OPTIONS",
+                    "Access-Control-Allow-Headers": "Content-Type",
+                },
+            });
+        }
+
         if (request.method === "POST") {
             const formData = await request.formData();
             const nombre = formData.get("nombre") || formData.get("name") || "Anónimo";
@@ -10,16 +22,25 @@ export default {
 
             const clientTemplate = await env.EMAIL_TEMPLATE_BUCKET.get("client-template.html");
             if (!clientTemplate) {
-                return new Response("No se encontró el template", { status: 500 });
+                return new Response("No se encontró el template", {
+                    status: 500,
+                    headers: { "Access-Control-Allow-Origin": "*" },
+                });
             }
 
             const adminTemplate = await env.EMAIL_TEMPLATE_BUCKET.get("admin-template.html");
             if (!adminTemplate) {
-                return new Response("No se encontró el template", { status: 500 });
+                return new Response("No se encontró el template", {
+                    status: 500,
+                    headers: { "Access-Control-Allow-Origin": "*" },
+                });
             }
 
             if (!email || !nombre) {
-                return new Response("Faltan campos obligatorios", { status: 400 });
+                return new Response("Faltan campos obligatorios", {
+                    status: 400,
+                    headers: { "Access-Control-Allow-Origin": "*" },
+                });
             }
 
             const url = env.SMTP2GO_URL;
@@ -69,11 +90,21 @@ export default {
 
             return new Response(JSON.stringify({ ok: true, message: "Mensajes enviados" }), {
                 status: 200,
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*"
+                },
             });
 
         }
 
-        return new Response("Método no permitido", { status: 405 });
+        return new Response("Método no permitido", {
+            status: 405,
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "POST, OPTIONS",
+                "Access-Control-Allow-Headers": "Content-Type"
+            },
+        });
     },
 };
