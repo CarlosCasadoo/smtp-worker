@@ -67,7 +67,10 @@ export default {
                 }),
             });
 
-            return new Response("✅ Mensajes enviados", { status: 200 });
+            return new Response(JSON.stringify({ ok: true, message: "Mensajes enviados" }), {
+                status: 200,
+                headers: { "Content-Type": "application/json" },
+            });
 
         }
 
